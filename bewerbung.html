@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>BfVAK – Bewerbung</title>
+
+<style>
+body { font-family: Arial; background:#f2f4f7; margin:0; }
+.container { max-width:600px; margin:40px auto; background:white; padding:20px; }
+
+.back { cursor:pointer; margin-bottom:10px; display:inline-block; }
+
+input, select {
+ width:100%; padding:10px; margin-top:10px;
+ border:2px solid #ccc; border-radius:4px;
+}
+
+.error { border-color:red; }
+
+button {
+ margin-top:20px; padding:12px; width:100%;
+ border:none; color:white; font-weight:bold;
+ background:gray; cursor:not-allowed;
+}
+
+button.active {
+ background:green;
+ cursor:pointer;
+}
+
+.anim {
+ position:fixed;
+ bottom:0;
+ left:50%;
+ transform:translateX(-50%);
+ font-size:30px;
+ animation:fly 1s ease-out forwards;
+}
+
+@keyframes fly {
+ 0% { transform:translate(-50%,0); opacity:1; }
+ 100% { transform:translate(-50%,-200px); opacity:0; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="back" onclick="goBack()">⬅ Zurück</div>
+
+<h2>Bewerbungsformular</h2>
+
+<input id="vorname" placeholder="Vorname">
+<input id="nachname" placeholder="Nachname">
+
+<input id="geburt" type="date">
+<div id="alterText"></div>
+
+<select id="geschlecht">
+<option value="">Geschlecht wählen</option>
+<option>Männlich</option>
+<option>Weiblich</option>
+</select>
+
+<select id="drink">
+<option value="">Lieblingsgetränk</option>
+<option>Bier</option>
+<option>Wein</option>
+<option>Schnaps</option>
+<option>Vodka</option>
+<option>Bacardi</option>
+<option>Martini</option>
+<option>Pennergranate</option>
+<option>Whisky</option>
+</select>
+
+<button id="submit" onclick="submitForm()">Abschicken</button>
+
+</div>
+
+<script>
+const fields = ["vorname","nachname","geburt","geschlecht","drink"];
+
+fields.forEach(id=>{
+ document.getElementById(id).addEventListener("input", checkForm);
+});
+
+function checkForm(){
+ let valid=true;
+ fields.forEach(id=>{
+  if(!document.getElementById(id).value) valid=false;
+ });
+
+ let btn=document.getElementById("submit");
+ if(valid){
+  btn.classList.add("active");
+  btn.disabled=false;
+ } else {
+  btn.classList.remove("active");
+  btn.disabled=true;
+ }
+}
+
+document.getElementById("geburt").addEventListener("input", ()=>{
+ let val=document.getElementById("geburt").value;
+ if(val){
+  let age = new Date().getFullYear() - new Date(val).getFullYear();
+  document.getElementById("alterText").innerText="("+age+" Jahre)";
+ }
+});
+
+function submitForm(){
+ let valid=true;
+
+ fields.forEach(id=>{
+  let el=document.getElementById(id);
+  if(!el.value){
+   el.classList.add("error");
+   valid=false;
+  } else {
+   el.classList.remove("error");
+  }
+ });
+
+ if(!valid) return;
+
+ for(let i=0;i<10;i++){
+  let el=document.createElement("div");
+  el.className="anim";
+  el.innerText=["🍺","🥃","🍸"][Math.floor(Math.random()*3)];
+  el.style.left=Math.random()*100+"%";
+  document.body.appendChild(el);
+
+  setTimeout(()=>el.remove(),1000);
+ }
+
+ alert("Bewerbung erfolgreich abgeschickt!");
+}
+
+function goBack(){
+ window.location.href="index.html";
+}
+</script>
+
+</body>
+</html>
