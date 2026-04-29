@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>BfVAK – Startseite</title>
+
+<style>
+body { margin:0; font-family: Arial, sans-serif; background:#f2f4f7; }
+
+/* Flag */
+.flag-bar div { height:3px; }
+.black{background:black;} .red{background:red;} .gold{background:gold;}
+
+.topbar{background:#000;color:white;padding:10px 20px;font-size:14px;}
+.header{background:white;padding:20px;border-bottom:3px solid black;}
+.nav{background:#e6e6e6;padding:10px 20px;}
+.nav a{margin-right:20px;text-decoration:none;color:black;font-weight:bold;cursor:pointer;}
+
+.wrapper{max-width:1100px;margin:30px auto;display:flex;gap:20px;}
+.main{flex:3;background:white;padding:30px;}
+.sidebar{flex:1;background:white;padding:20px;}
+
+.box{border:1px solid #ccc;padding:20px;margin-top:20px;background:#fafafa;}
+
+.side-button{
+display:block;padding:12px;margin-bottom:10px;background:black;color:white;
+text-align:center;cursor:pointer;transition:0.2s;
+}
+.side-button:hover{background:#444;}
+
+.promille{font-size:20px;font-weight:bold;margin-top:10px;}
+
+.modal{
+display:none;position:fixed;top:0;left:0;width:100%;height:100%;
+background:rgba(0,0,0,0.6);
+}
+.modal-content{
+background:white;width:420px;margin:80px auto;padding:20px;border-radius:6px;
+}
+
+input,select{width:100%;padding:8px;margin-top:10px;}
+button{margin-top:15px;padding:10px;width:100%;cursor:pointer;}
+
+.hidden{display:none;}
+
+img{width:100%;max-width:300px;margin-top:10px;}
+
+.footer{margin-top:40px;padding:20px;text-align:center;color:gray;}
+</style>
+</head>
+
+<body>
+
+<div class="flag-bar">
+<div class="black"></div>
+<div class="red"></div>
+<div class="gold"></div>
+</div>
+
+<div class="topbar">Bundesportal – Informationssystem</div>
+
+<div class="header">
+<h1>Bundesinstitut für verantwortungslosen Alkoholkonsum (BfVAK)</h1>
+</div>
+
+<div class="nav">
+<a onclick="show('home')">Startseite</a>
+<a onclick="show('about')">Über uns</a>
+<a onclick="show('pruefer')">Prüfer</a>
+</div>
+
+<div class="wrapper">
+
+<div class="main">
+
+<!-- HOME -->
+<div id="home">
+<h2>Willkommen beim BfVAK</h2>
+
+<div class="box">
+<h3>Promille-Simulator™</h3>
+<button onclick="promille()">Test starten</button>
+<div class="promille" id="promilleAnzeige"></div>
+</div>
+
+<div class="box">
+<h3>Aktuelle Hinweise</h3>
+<p id="hinweisText">Bitte verantwortungslos genießen.</p>
+<button onclick="neuerHinweis()">Neuen Hinweis</button>
+</div>
+</div>
+
+<!-- ABOUT -->
+<div id="about" class="hidden">
+<h2>Über uns</h2>
+<p>
+Das Bundesinstitut für verantwortungslosen Alkoholkonsum ist die deutsche Bundesbehörde
+zur Kontrolle eines übermäßigen Konsums innerhalb des Landes.
+</p>
+<p>
+Ziel ist die Sicherstellung gleichmäßiger und ausreichender Pegelstände innerhalb der Bevölkerung.
+</p>
+</div>
+
+<!-- PRÜFER -->
+<div id="pruefer" class="hidden">
+<h2>Unsere Prüfer</h2>
+
+<h3>Daniil Wilms</h3>
+<p>Offizieller Prüfer für alkoholische Getränke</p>
+<img src="IMG_1928.jpeg">
+
+<h3>Fabian Wolff</h3>
+<p>Offizieller Prüfer für alkoholische Getränke</p>
+<img src="57325ABA-B320-496C-AAEA-8522003EF236.jpeg">
+
+</div>
+
+</div>
+
+<div class="sidebar">
+<h3>Schnellzugriff</h3>
+
+<div class="side-button" onclick="openForm()">Bewerbung als Prüfer</div>
+<div class="side-button" onclick="soundClick()">Prüfung anmelden</div>
+<div class="side-button" onclick="soundClick()">Zertifikat anfordern</div>
+<div class="side-button" onclick="soundClick()">Notfall-Nachverkostung</div>
+<div class="side-button" onclick="verstoss()">Verstoß melden</div>
+
+<p id="verstossText"></p>
+
+</div>
+
+</div>
+
+<!-- FORM -->
+<div class="modal" id="formModal">
+<div class="modal-content">
+<h3>Bewerbungsformular</h3>
+<input placeholder="Name">
+<input placeholder="Alter">
+
+<select>
+<option>Lieblingsgetränk</option>
+<option>Bier</option>
+<option>Wein</option>
+<option>Schnaps</option>
+<option>Alles gleichzeitig</option>
+</select>
+
+<button onclick="absenden()">Bewerbung absenden</button>
+<button onclick="closeForm()">Abbrechen</button>
+</div>
+</div>
+
+<!-- AUDIO -->
+<audio id="clickSound" src="https://www.soundjay.com/buttons/sounds/button-16.mp3"></audio>
+<audio id="successSound" src="https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3"></audio>
+
+<div class="footer">⚠️ Satirisches Projekt – keine echte Behörde</div>
+
+<script>
+function show(id){
+ document.getElementById("home").classList.add("hidden");
+ document.getElementById("about").classList.add("hidden");
+ document.getElementById("pruefer").classList.add("hidden");
+ document.getElementById(id).classList.remove("hidden");
+}
+
+function soundClick(){
+ document.getElementById("clickSound").play();
+ alert("Ihr Antrag wird bearbeitet...");
+}
+
+function promille(){
+ let wert=(Math.random()*3).toFixed(2);
+ let text="Ihr Wert: "+wert+"‰\n";
+ if(wert<0.5) text+="→ Anfänger";
+ else if(wert<1.5) text+="→ Fortgeschritten";
+ else text+="→ Offizieller Prüfer";
+ document.getElementById("promilleAnzeige").innerText=text;
+ document.getElementById("clickSound").play();
+}
+
+function neuerHinweis(){
+ const h=[
+ "Bitte trinken Sie langsam.",
+ "Mehr Daten nötig.",
+ "Kontrollgruppe fehlt.",
+ "Bitte erneut testen."
+ ];
+ document.getElementById("hinweisText").innerText=h[Math.floor(Math.random()*h.length)];
+}
+
+function openForm(){
+ document.getElementById("formModal").style.display="block";
+ document.getElementById("clickSound").play();
+}
+
+function closeForm(){
+ document.getElementById("formModal").style.display="none";
+}
+
+function absenden(){
+ document.getElementById("successSound").play();
+ alert("Vielen Dank für Ihre Bewerbung. Ihr Bewerbungsformular ist bei uns eingegangen und wird schnellstmöglich bearbeitet.");
+ closeForm();
+}
+
+function verstoss(){
+ document.getElementById("verstossText").innerText=
+ "Wenn Sie einen Verstoß durch zu niedrigen Alkoholkonsum festgestellt haben, melden Sie diesen bitte umgehend.";
+}
+</script>
+
+</body>
+</html>
